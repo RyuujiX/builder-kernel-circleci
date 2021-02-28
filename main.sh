@@ -445,6 +445,7 @@ FixPieWifi()
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
     KernelFor='P'
     RefreshRate="60"
+	SendInfo='belum'
     rm -rf out
     cd $mainDir
 }
