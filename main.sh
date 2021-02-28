@@ -130,14 +130,18 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
     FolderUp=""
 	if [ "$branch" == "lynx-uc" ];then
 		Variant="Saitama"
+		JP="サイタマ"
 	else
 	if [ "$branch" == "lynx" ];then
 		Variant="Ryuu"
+		JP="リュウジ"
 	else
 	if [ "$branch" == "lynx-uvc" ];then
 		Variant="Ishigami"
+		JP="イシガミ"
 	else
 		Variant="XOBOD"
+		JP="Cobod"
 	fi
 	fi
 	fi
@@ -386,9 +390,9 @@ CompileKernel(){
 		[[ "$BuilderKernel" == "storm" ]] && TypeBuilder="StormBreaker"
 		[[ "$BuilderKernel" == "mystic" ]] && TypeBuilder="Mystic"
         if [ $TypeBuild == "Stable" ];then
-            ZipName="[$GetBD][$KernelFor]$KName-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
+            ZipName="[$GetBD][$KernelFor]LynX-$JP-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
         else
-            ZipName="[$GetBD][$KernelFor][$TypeBuild]$KName-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
+            ZipName="[$GetBD][$KernelFor][$TypeBuild]LynX-$JP-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
         fi
         # RealZipName="[$GetBD]$KVer-$HeadCommitId.zip"
         RealZipName="$ZipName"
@@ -414,7 +418,7 @@ MakeZip(){
     if [ ! -z "$spectrumFile" ];then
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
-    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=LynX-$Variant by Ryuuji/g" anykernel.sh
+    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=LynX-$Variant ${RefreshRate}Hz by Ryuuji/g" anykernel.sh
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
     if [ ! -z "$1" ];then
