@@ -128,7 +128,6 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
     TotalCores=$(nproc --all)
     TypeBuildTag="AOSP"
     KernelFor='XR'
-    SendInfo='belum'
     RefreshRate="60"
     SetTag="LA.UM.8.2.r2"
     SetLastTag="sdm660.0"
@@ -305,7 +304,6 @@ CompileKernel(){
     fi
     # rm -rf out # always remove out directory :V
     BUILD_START=$(date +"%s")
-    if [ "$SendInfo" != 'sudah' ];then
         if [ "$BuilderKernel" == "gcc" ];then
             MSG="<b>🔨 Building Kernel....</b>%0A<b>Device: $DEVICE</b>%0A<b>Codename: $CODENAME</b>%0A<b>Build Date: $GetCBD </b>%0A<b>Branch: $branch</b>%0A<b>Kernel Name: $KName</b>%0A<b>Kernel Version: $KVer</b>%0A<b>Last Commit-Message: $HeadCommitMsg </b>%0A<b>Builder Info: </b>%0A<code>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>%0A<code>- $gcc64Type </code>%0A<code>- $gcc32Type </code>%0A<code>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>%0A%0A #$TypeBuildTag  #$TypeBuild"
         else
@@ -316,8 +314,6 @@ CompileKernel(){
         else
             tg_send_info "$MSG" 
         fi
-        SendInfo='sudah'
-    fi
     git reset --hard $HeadCommitId
     if [ ! -z "$1" ] && [ $1 != "60" ];then
         update_file "qcom,mdss-dsi-panel-framerate = " "qcom,mdss-dsi-panel-framerate = <$1>;" "./arch/arm/boot/dts/qcom/X01BD/dsi-panel-hx83112a-1080p-video-tm.dtsi" && \
@@ -450,7 +446,6 @@ FixPieWifi()
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
     KernelFor='P'
     RefreshRate="60"
-	SendInfo='belum'
     rm -rf out
     cd $mainDir
 }
