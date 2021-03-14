@@ -396,9 +396,9 @@ CompileKernel(){
 		[[ "$BuilderKernel" == "storm" ]] && TypeBuilder="StormBreaker"
 		[[ "$BuilderKernel" == "mystic" ]] && TypeBuilder="Mystic"
         if [ $TypeBuild == "Stable" ];then
-            ZipName="[$GetBD][$KernelFor]LynX-$JP-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
+            ZipName="$KName-$KVer-$KernelFor-$CODENAME.zip"
         else
-            ZipName="[$GetBD][$KernelFor][$TypeBuild]LynX-$JP-$KVer[$TypeBuilder][${RefreshRate}Hz].zip"
+            ZipName="[$TypeBuild]$KName-$KVer-$KernelFor-$CODENAME.zip"
         fi
         # RealZipName="[$GetBD]$KVer-$HeadCommitId.zip"
         RealZipName="$ZipName"
@@ -424,7 +424,7 @@ MakeZip(){
     if [ ! -z "$spectrumFile" ];then
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
-    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=LynX-$Variant ${RefreshRate}Hz by Ryuuji/g" anykernel.sh
+    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Hikari by Ryuuji/g" anykernel.sh
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
     if [ ! -z "$1" ];then
@@ -440,7 +440,7 @@ FixPieWifi()
     cd $kernelDir
     git reset --hard origin/$branch
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
-    git commit -s -m "Fix wifi broken for Android 9"
+    git commit -s -m "Building for Android 9"
     KVer=$(make kernelversion)
     HeadCommitId=$(git log --pretty=format:'%h' -n1)
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
