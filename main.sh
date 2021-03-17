@@ -64,12 +64,16 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
         git clone https://github.com/kdrag0n/proton-clang -b master $clangDir --depth=1
 		gcc10="Y"
 		Compiler="Proton Clang"
+		TypeBuilder="Proton"
+		TypePrint="Proton"
 	fi
     if [ "$BuilderKernel" == "dtc" ];then
         getInfo ">> cloning DragonTC clang 10 . . . <<"
         git clone https://github.com/NusantaraDevs/DragonTC -b 10.0 $clangDir --depth=1
 		gcc10="Y"
 		Compiler="DragonTC Clang"
+		TypeBuilder="DTC"
+		TypePrint="DragonTC"
     fi
 	if [ "$BuilderKernel" == "storm" ];then
         getInfo ">> cloning StormBreaker clang 11 . . . <<"
@@ -77,12 +81,16 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
 		gcc10="Y"
         SimpleClang="Y"
 		Compiler="StormBreaker Clang"
+		TypeBuilder="Storm"
+		TypePrint="StormBreaker"
 	fi
 	if [ "$BuilderKernel" == "mystic" ];then
         getInfo ">> cloning Mystic clang 12 . . . <<"
         git clone https://github.com/okta-10/mystic-clang -b Mystic-12.0.0 $clangDir --depth=1
 		allFromClang='Y'
 		Compiler="Mystic Clang"
+		TypeBuilder="Mystic"
+		TypePrint="Mystic"
 	fi
     if [ "$BuilderKernel" == "gcc" ];then
         getInfo ">> cloning gcc64 . . . <<"
@@ -92,6 +100,8 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
         for64=aarch64-linux-android
         for32=arm-linux-androideabi
 		Compiler="GCC Clang"
+		TypeBuilder="GCC"
+		TypePrint="GCC"
     else
 	if [ "$gcc10" == "Y" ];then
 	getInfo ">> cloning gcc64 10.2.0 . . . <<"
@@ -132,26 +142,14 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
     SetTag="LA.UM.8.2.r2"
     SetLastTag="sdm660.0"
     FolderUp=""
-	if [ "$branch" == "lynx-uc" ];then
-		Variant="Saitama"
-		JP="サイタマ"
-	else
-	if [ "$branch" == "lynx" ];then
-		Variant="Ryuu"
-		JP="リュウジ"
-	else
-	if [ "$branch" == "lynx-uvc" ];then
-		Variant="Ishigami"
-		JP="イシガミ"
-	else
-		Variant="XOBOD"
-		JP="Cobod"
-	fi
-	fi
-	fi
+	
     export KBUILD_BUILD_USER="RyuujiX"
     export KBUILD_BUILD_HOST="DirumahAja"
     if [ "$BuilderKernel" == "gcc" ];then
+	cd $kernelDir
+	git revert aa635687f89682a8d9a7c047c9228843f438b250 --no-commit
+	git commit -s -m "Swtich to OPTIMIZE_FOR_SIZE"
+	cd $mainDir
         ClangType="$($gcc64Dir/bin/$for64-gcc --version | head -n 1)"
     else
         ClangType="$($clangDir/bin/clang --version | head -n 1)"
@@ -390,15 +388,10 @@ CompileKernel(){
     DIFF=$((BUILD_END - BUILD_START))
     if [ -f $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ];then
         cp -af $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb $AnykernelDir
-        [[ "$BuilderKernel" == "gcc" ]] && TypeBuilder="GCC"
-        [[ "$BuilderKernel" == "clang" ]] && TypeBuilder="Proton"
-        [[ "$BuilderKernel" == "dtc" ]] && TypeBuilder="DTC"
-		[[ "$BuilderKernel" == "storm" ]] && TypeBuilder="StormBreaker"
-		[[ "$BuilderKernel" == "mystic" ]] && TypeBuilder="Mystic"
         if [ $TypeBuild == "Stable" ];then
-            ZipName="$KName-$KVer-$KernelFor-$CODENAME.zip"
+            ZipName="$KName-$KVer-$KernelFor-$TypeBuilder-$CODENAME.zip"
         else
-            ZipName="[$TypeBuild]$KName-$KVer-$KernelFor-$CODENAME.zip"
+            ZipName="[$TypeBuild]$KName-$KVer-$KernelFor-$TypeBuilder-$CODENAME.zip"
         fi
         # RealZipName="[$GetBD]$KVer-$HeadCommitId.zip"
         RealZipName="$ZipName"
@@ -424,7 +417,7 @@ MakeZip(){
     if [ ! -z "$spectrumFile" ];then
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
-    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Hikari by Ryuuji/g" anykernel.sh
+    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Noragami $KernelFor-$Driver $TypePrint by Ryuuji/g" anykernel.sh
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
     if [ ! -z "$1" ];then
@@ -439,6 +432,8 @@ FixPieWifi()
 {
     cd $kernelDir
     git reset --hard origin/$branch
+	git revert 7143f040548d477c4ad463f0ff0f1e0d597d9182 --no-commit
+	git commit -s -m "Brringup P Edition"
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
     git commit -s -m "Building for Android 9"
     KVer=$(make kernelversion)
