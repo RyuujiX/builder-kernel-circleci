@@ -389,9 +389,9 @@ CompileKernel(){
     if [ -f $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ];then
         cp -af $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb $AnykernelDir
         if [ $TypeBuild == "Stable" ];then
-            ZipName="$KName-$KVer-$KernelFor-$TypeBuilder-$CODENAME.zip"
+            ZipName="$KName-$KVer-$TypeBuilder-$CODENAME.zip"
         else
-            ZipName="[$TypeBuild]$KName-$KVer-$KernelFor-$TypeBuilder-$CODENAME.zip"
+            ZipName="[$TypeBuild]$KName-$KVer-$TypeBuilder-$CODENAME.zip"
         fi
         # RealZipName="[$GetBD]$KVer-$HeadCommitId.zip"
         RealZipName="$ZipName"
