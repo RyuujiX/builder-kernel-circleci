@@ -436,6 +436,7 @@ FixPieWifi()
 	git commit -s -m "Brringup P Edition"
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
     git commit -s -m "Building for Android 9"
+	KName=$(cat "$(pwd)/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     KVer=$(make kernelversion)
     HeadCommitId=$(git log --pretty=format:'%h' -n1)
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
