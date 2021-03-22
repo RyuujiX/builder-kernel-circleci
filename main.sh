@@ -417,7 +417,7 @@ MakeZip(){
     if [ ! -z "$spectrumFile" ];then
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
-    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Noragami $KernelFor $TypePrint by Ryuuji/g" anykernel.sh
+    cp -af anykernel-real.sh anykernel.sh && sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Tsukishima $KernelFor $TypePrint by Ryuuji/g" anykernel.sh
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
     if [ ! -z "$1" ];then
@@ -432,8 +432,8 @@ FixPieWifi()
 {
     cd $kernelDir
     git reset --hard origin/$branch
-	git revert 7143f040548d477c4ad463f0ff0f1e0d597d9182 --no-commit
-	git commit -s -m "Brringup P Edition"
+	git revert f5fde0ea742e135a969df81c75216d93bb5ec631 --no-commit
+	git commit -s -m "Bringup P Edition"
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
     git commit -s -m "Building for Android 9"
 	KName=$(cat "$(pwd)/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
