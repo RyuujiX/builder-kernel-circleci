@@ -401,8 +401,12 @@ CompileKernel(){
         else
             MakeZip
         fi
-    else
-        MSG="<b>❌ Build Failed</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+    elif ! [ -f $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ];then
+        MSG="❌<b>Build Failed</b>
+		- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s) </code>
+		
+		Sad Boy"
+		
         if [ ! -z "$2" ];then
             tg_send_info "$MSG" "$2"
         else
