@@ -419,12 +419,12 @@ MakeZip(){
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Tsukishima/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-KuroNeko/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=Ryuuji @ItsRyuujiX/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KVer/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Time won’t make you forget, it will make you understand things./g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Patience is needed when you want to achieve a success./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$GetCBD/g" anykernel.sh
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
@@ -440,7 +440,7 @@ FixPieWifi()
 {
     cd $kernelDir
     git reset --hard origin/$branch
-	git revert f5fde0ea742e135a969df81c75216d93bb5ec631 --no-commit
+	git revert bbf765ad3028ba5bd2bc574446281a4ae2700322 --no-commit
 	git commit -s -m "Bringup P Edition"
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
     git commit -s -m "Building for Android 9"
