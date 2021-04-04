@@ -8,9 +8,14 @@ fi
 . main.sh 'initial' 'full'
 
 FolderUp="BrokenNucleus"
-spectrumFile="ryuu.rc"
 TypeBuild="RELEASE"
-TypeBuildTag="Awokawok"
+if [ "$branch" = "lynx-eas" ];then
+TypeBuildTag="EAS"
+spectrumFile="eas.rc"
+else
+TypeBuildTag="HMP"
+spectrumFile="ryuu.rc"
+fi
 getInfo ">> Building kernel . . . . <<"
 
 CompileKernel
