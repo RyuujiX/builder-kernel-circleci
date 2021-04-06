@@ -156,6 +156,8 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
     export KBUILD_BUILD_HOST="DirumahAja"
     if [ "$BuilderKernel" == "gcc" ];then
 	cd $kernelDir
+	git revert bf00cdb4e4b2499f7368fab7f618405a1f3dd661 --no-commit
+	git commit -s -m "Revert Some Commits"
 	git revert aa635687f89682a8d9a7c047c9228843f438b250 --no-commit
 	git commit -s -m "Swtich to OPTIMIZE_FOR_SIZE"
 	cd $mainDir
