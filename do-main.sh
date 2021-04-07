@@ -1,6 +1,6 @@
 #! /bin/bash
 branch="lynx"
-BuilderKernel="00000"
+BuilderKernel="dtc"
 
 if [ "$BuilderKernel" != "proton" ] && [ "$BuilderKernel" != "dtc" ] && [ "$BuilderKernel" != "gcc" ] && [ "$BuilderKernel" != "storm" ] && [ "$BuilderKernel" != "strix" ] && [ "$BuilderKernel" != "evagcc" ] ;then
     exit;
