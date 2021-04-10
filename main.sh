@@ -439,12 +439,12 @@ MakeZip(){
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-ShiroNeko/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Hayabusa/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=Ryuuji @ItsRyuujiX/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KVer/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Intelligence is not the determinant of success, but hard work is the real determinant of your success./g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=If you don’t go after what you want, you’ll never have it. And if you don’t ask, the answer is always no. Also if you don’t step forward, you’re always in the same place./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$GetCBD/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$TypeBuild/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$TypeBuildTag/g" anykernel.sh
@@ -464,9 +464,9 @@ FixPieWifi()
     cd $kernelDir
     git reset --hard origin/$branch
 	if [ "$branch" == "lynx-eas" ];then
-	git revert 6f05096d5eda254ff3cb3bad9d1f594b64a2c256 --no-commit
+	git revert c0056e82538336661152f5b42c32ecd6ad2882af --no-commit
 	else
-	git revert 6b3f526180c32569e8f304d50222757f7ece5434 --no-commit
+	git revert ea9e26b88b66785c4012ed4c774a2fb61af05e7c --no-commit
 	fi
 	git commit -s -m "Bringup P Edition"
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
