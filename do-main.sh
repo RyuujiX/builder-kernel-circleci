@@ -1,6 +1,6 @@
 #! /bin/bash
 branch="lynx"
-BuilderKernel="00000"
+BuilderKernel="yuki"
 
 if [ "$BuilderKernel" != "proton" ] && [ "$BuilderKernel" != "dtc" ] && [ "$BuilderKernel" != "gcc" ] && [ "$BuilderKernel" != "storm" ] && [ "$BuilderKernel" != "strix" ] && [ "$BuilderKernel" != "yuki" ] ;then
     exit;
@@ -8,7 +8,7 @@ fi
 . main.sh 'initial' 'full'
 
 FolderUp="BrokenNucleus"
-TypeBuild="RELEASE"
+TypeBuild="STABLE"
 if [ "$branch" = "lynx-eas" ];then
 TypeBuildTag="EAS"
 TypeScript="EAS Advanced Configuration"
