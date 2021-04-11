@@ -204,9 +204,16 @@ tg_send_info(){
     fi
 }
 
+tg_send_sticker() {
+    curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendSticker" \
+        -d sticker="$1" \
+        -d chat_id="-1001407005109"
+}
+
 tg_send_files(){
     KernelFiles="$(pwd)/$RealZipName"
 	MD5CHECK=$(md5sum "$KernelFiles" | cut -d' ' -f1)
+	SID="CAACAgUAAxkBAAIb0mBy2DMFsj1kyc5H-sxMRU4uGq4XAAJxAwACckHJVoQTT9R9yDxQHgQ"
     MSG="✅ <b>Build Done</b> 
 - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s) </code> 
 
@@ -215,7 +222,6 @@ tg_send_files(){
 
 <b>Zip Name</b> 
 - <code>$ZipName</code>"
-
 
     if [ "$useGdrive" == "Y" ];then
         currentFolder="$(pwd)"
@@ -406,9 +412,11 @@ CompileKernel(){
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
 	if [[ ! -e $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ]];then
+		SID="CAACAgUAAxkBAAIb12By2GpymhVy7G9g1Y5D2FcgvYr7AALZAQAC4dzJVslZcFisbk9nHgQ"
         MSG="<b>❌ Build failed</b>%0AKernel Name : <b>${KName}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
 		
         tg_send_info "$MSG" 
+		tg_send_sticker "$SID"
         exit -1
 	fi
         cp -af $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb $AnykernelDir
