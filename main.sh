@@ -405,7 +405,12 @@ CompileKernel(){
     fi
     BUILD_END=$(date +"%s")
     DIFF=$((BUILD_END - BUILD_START))
-    if [ -f $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ];then
+	if [[ ! -e $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ]];then
+        MSG="<b>❌ Build failed</b>%0AKernel Name : <b>${KName}</b>%0A- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)</code>%0A%0ASad Boy"
+		
+        tg_send_info "$MSG" 
+        exit -1
+	fi
         cp -af $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb $AnykernelDir
 		if [ "branch" = "lynx-eas" ];then
          if [ $TypeBuild = "STABLE" ] || [ $TypeBuild = "RELEASE" ];then
@@ -425,19 +430,6 @@ CompileKernel(){
         else
             MakeZip
         fi
-    elif ! [ -f $kernelDir/out/arch/$ARCH/boot/Image.gz-dtb ];then
-        MSG="❌<b>Build Failed</b>
-		- <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s) </code>
-		
-		Sad Boy"
-		
-        if [ ! -z "$2" ];then
-            tg_send_info "$MSG" "$2"
-        else
-            tg_send_info "$MSG" 
-        fi
-        exit -1
-    fi
 }
 
 
