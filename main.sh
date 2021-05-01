@@ -51,13 +51,13 @@ useGdrive='N'
 
 if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
 	
-    if [ ! -z "$2" ] && [ "$2" == 'full' ];then
-        getInfo ">> cloning kernel full . . . <<"
-        git clone https://$GIT_SECRET@github.com/$GIT_USERNAME/kernel-x01bd -b "$branch" $kernelDir
-    else
-        getInfo ">> cloning kernel . . . <<"
-        git clone https://$GIT_SECRET@github.com/$GIT_USERNAME/kernel-x01bd -b "$branch" $kernelDir --depth=1 
-    fi
+	if [ ! -z "$2" ] && [ "$2" == 'full' ];then
+		getInfo ">> cloning $CODENAME Kernel Source . . . <<"
+		git clone https://$GIT_SECRET@github.com/$GIT_USERNAME/$SOURCE -b "$branch" $kernelDir
+	else
+		getInfo ">> cloning $CODENAME Kernel Source . . . <<"
+		git clone https://$GIT_SECRET@github.com/$GIT_USERNAME/$SOURCE -b "$branch" $kernelDir --depth=1
+	fi
     [ -z "$BuilderKernel" ] && BuilderKernel="storm"
     if [ "$BuilderKernel" == "proton" ];then
         getInfo ">> cloning Proton clang 13 . . . <<"
@@ -129,7 +129,7 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
 	fi
 
     getInfo ">> cloning Anykernel . . . <<"
-    git clone https://github.com/RyuujiX/AnyKernel3 -b master $AnykernelDir --depth=1
+    git clone https://github.com/RyuujiX/AnyKernel3 -b injectorx $AnykernelDir --depth=1
     getInfo ">> cloning Spectrum . . . <<"
     git clone https://github.com/RyuujiX/spectrum -b master $SpectrumDir --depth=1
     if [ "$useGdrive" == "Y" ];then
@@ -137,22 +137,23 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
         git clone https://$GIT_SECRET@github.com/$GIT_USERNAME/gdrive-uploader -b master $GdriveDir --depth=1 
     fi
     
-    DEVICE="Asus Max Pro M2"
-    CODENAME="X01BD"
     SaveChatID="-275630226"
     ARCH="arm64"
-    TypeBuild="Stable"
-    DEFFCONFIG="X01BD_defconfig"
     GetBD=$(date +"%m%d")
     GetCBD=$(date +"%Y-%m-%d")
     TotalCores=$(nproc --all)
-    TypeBuildTag="AOSP"
     KernelFor='XR'
     RefreshRate="60"
     SetTag="LA.UM.8.2.r2"
     SetLastTag="sdm660.0"
-    FolderUp=""
-	
+	if [ "$CODENAME" == "X00TD" ];then
+	DEVICE="Asus Max Pro M1"
+	DEFFCONFIG="X00TD_defconfig"
+	elif [ "$CODENAME" == "X01BD" ];then
+	DEVICE="Asus Max Pro M2"
+	DEFFCONFIG="X01BD_defconfig"
+	fi
+
     export KBUILD_BUILD_USER="RyuujiX"
     export KBUILD_BUILD_HOST="DirumahAja"
     if [ "$BuilderKernel" == "gcc" ];then
@@ -443,20 +444,37 @@ CompileKernel(){
 
 MakeZip(){
     cd $AnykernelDir
+	git reset --hard origin/injectorx
     if [ ! -z "$spectrumFile" ];then
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Amaterasu/g" anykernel.sh
+	sed -i "s/do.versioncheck=.*/do.versioncheck=0/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Sugiono/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=Ryuuji @ItsRyuujiX/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KVer/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Happiness is not how much money we have, but how much time we can be thankful./g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=There is no age limit to produce a good hardwork./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$GetCBD/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$TypeBuild/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$TypeBuildTag/g" anykernel.sh
 	sed -i "s/script.type=.*/script.type=$TypeScript/g" anykernel.sh
+	if [ "$CODENAME" == "X00TD" ];then
+	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
+	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
+	sed -i "s/device.name3=.*/device.name3=Zenfone Max Pro M1 (X00TD)/g" anykernel.sh
+	sed -i "s/device.name4=.*/device.name4=ASUS_X00TD/g" anykernel.sh
+	sed -i "s/device.name5=.*/device.name5=ASUS_X00T/g" anykernel.sh
+	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
+	fi
+	cd $AnykernelDir/META-INF/com/google/android
+	sed -i "s/KNAME/$KName/g" aroma-config
+	sed -i "s/KVER/$KVer/g" aroma-config
+	sed -i "s/KAUTHOR/Ryuuji @ItsRyuujiX/g" aroma-config
+	sed -i "s/KDEVICE/$DEVICE - $CODENAME/g" aroma-config
+	sed -i "s/KBDATE/$GetCBD/g" aroma-config
+	cd $AnykernelDir
 
     zip -r9 "$RealZipName" * -x .git README.md anykernel-real.sh .gitignore *.zip
     if [ ! -z "$1" ];then
@@ -472,19 +490,34 @@ FixPieWifi()
     cd $kernelDir
     git reset --hard origin/$branch
 	if [ "$branch" == "lynx-eas" ];then
-	git revert 408f1bc3a9d165470977da70e01cedaf48a520aa --no-commit
+	git revert d28042c1e9526f75527c4bc9da7851592aa30d1c --no-commit
+	# elif [ "$branch" == "skywalker" ];then
+	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
+	# elif [ "$branch" == "skywalker-eas" ];then
+	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
 	else
-	git revert c370c2d60f0faf5d75a1b7edd6ea4b54534d00d1 --no-commit
+	git revert 5660c27346f87be03b2c560e4be887f07cb5a1ef --no-commit
 	fi
 	git commit -s -m "Bringup P Edition"
+	if [ "$CODENAME" == "X00TD" ];then
+	git revert c4aa1ad96cb1ce072297fb877d6a75c8377f3c0e --no-commit
+	else
     git revert 4d79c0f15bbe67910e9f1346cc18a18101a47607 --no-commit
-    git commit -s -m "Building for Android 9"
-	KName=$(cat "$(pwd)/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
+	fi
+    git commit -s -m "Fix WiFi for Android 9"
     KVer=$(make kernelversion)
     HeadCommitId=$(git log --pretty=format:'%h' -n1)
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
     KernelFor='P'
     RefreshRate="60"
+	if [ "$CODENAME" == "X00TD" ];then
+	DEVICE="Asus Max Pro M1"
+	DEFFCONFIG="X00TD_defconfig"
+	elif [ "$CODENAME" == "X01BD" ];then
+	DEVICE="Asus Max Pro M2"
+	DEFFCONFIG="X01BD_defconfig"
+	fi
+	KName=$(cat "$(pwd)/arch/$ARCH/configs/$DEFFCONFIG" | grep "CONFIG_LOCALVERSION=" | sed 's/CONFIG_LOCALVERSION="-*//g' | sed 's/"*//g' )
     rm -rf out
     cd $mainDir
 }
