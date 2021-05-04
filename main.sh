@@ -102,6 +102,15 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
 		TypeBuilder="Yuki"
 		TypePrint="Yuki"
 	fi
+	if [ "$BuilderKernel" == "sdclang" ];then
+        getInfo ">> cloning Snapdragon-LLVM clang 10.0.9 . . . <<"
+        git clone https://github.com/RyuujiX/snapdragon-llvm -b 10.0.9 $clangDir --depth=1
+		gcc10="Y"
+		SimpleClang="Y"
+		Compiler="Snapdragon-LLVM Clang"
+		TypeBuilder="SD"
+		TypePrint="Snapdragon-LLVM"
+	fi
     if [ "$BuilderKernel" == "gcc" ];then
         getInfo ">> cloning gcc64 . . . <<"
         git clone https://github.com/RyuujiX/aarch64-linux-android-4.9/ -b android-10.0.0_r47 $gcc64Dir --depth=1
@@ -188,7 +197,7 @@ if [ ! -z "$1" ] && [ "$1" == 'initial' ];then
     HeadCommitId=$(git log --pretty=format:'%h' -n1)
     HeadCommitMsg=$(git log --pretty=format:'%s' -n1)
     cd $mainDir
-    apt-get -y update && apt-get -y upgrade && apt-get -y install tzdata git automake lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng bc libstdc++6 wget python3 python3-pip python gcc clang libssl-dev rsync flex git-lfs libz3-dev libz3-4 axel tar && python3 -m pip  install networkx
+    apt-get -y update && apt-get -y upgrade && apt-get -y install tzdata git automake lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng bc libstdc++6 libncurses5 wget python3 python3-pip python gcc clang libssl-dev rsync flex git-lfs libz3-dev libz3-4 axel tar && python3 -m pip  install networkx
 fi
 
 tg_send_info(){
