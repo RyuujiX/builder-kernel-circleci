@@ -11,13 +11,13 @@ if [ "$CODENAME" == "X00TD" ];then
 else
 	SOURCE=kernel-x01bd
 fi
-. main.sh 'initial' 'full'
 
 FolderUp="BrokenNucleus"
 TypeBuild="RELEASE"
 if [ "$branch" = "lynx-eas" ] || [ "$branch" = "skywalker-eas" ];then
 TypeBuildTag="EAS"
 TypeScript="EAS Advanced Configuration"
+AKbranch="injectorx-eas"
 	if [ "$CODENAME" == "X00TD" ];then
 	spectrumFile="eas-x00t.rc"
 	else
@@ -26,12 +26,14 @@ TypeScript="EAS Advanced Configuration"
 else
 TypeBuildTag="HMP"
 TypeScript="Spectrum"
+AKbranch="injectorx"
 	if [ "$CODENAME" == "X00TD" ];then
 	spectrumFile="ryuu-x00t.rc"
 	else
 	spectrumFile="ryuu.rc"
 	fi
 fi
+. main.sh 'initial' 'full'
 
 getInfo ">> Building kernel . . . . <<"
 
