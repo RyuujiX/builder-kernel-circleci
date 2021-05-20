@@ -458,7 +458,6 @@ MakeZip(){
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/do.versioncheck=.*/do.versioncheck=0/g" anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Sugiono/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
@@ -469,6 +468,11 @@ MakeZip(){
 	sed -i "s/build.type=.*/build.type=$TypeBuild/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$TypeBuildTag/g" anykernel.sh
 	sed -i "s/script.type=.*/script.type=$TypeScript/g" anykernel.sh
+	if [ "$KernelFor" == "P" ];then
+	sed -i "s/supported.versions=.*/supported.versions=9/g" anykernel.sh
+	else
+	sed -i "s/do.versioncheck=.*/do.versioncheck=0/g" anykernel.sh
+	fi
 	if [ "$CODENAME" == "X00TD" ];then
 	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
 	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
