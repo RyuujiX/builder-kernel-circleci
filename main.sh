@@ -458,12 +458,12 @@ MakeZip(){
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Sugiono/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Hikikomori/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=Ryuuji @ItsRyuujiX/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KVer/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=There is no age limit to produce a good hardwork./g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=The best revenge for the people who have insulted you is the success that you can show them later./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$GetCBD/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$TypeBuild/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$TypeBuildTag/g" anykernel.sh
@@ -503,13 +503,13 @@ FixPieWifi()
     cd $kernelDir
     git reset --hard origin/$branch
 	if [ "$branch" == "lynx-eas" ];then
-	git revert d28042c1e9526f75527c4bc9da7851592aa30d1c --no-commit
+	git revert cd02fd2ef9b1513b39ac7de6fb98e08128a6e84e --no-commit
 	# elif [ "$branch" == "skywalker" ];then
 	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
 	# elif [ "$branch" == "skywalker-eas" ];then
 	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
 	else
-	git revert 5660c27346f87be03b2c560e4be887f07cb5a1ef --no-commit
+	git revert 484986a8fe5e8b44a1da3e41f0aec3220292459d --no-commit
 	fi
 	git commit -s -m "Bringup P Edition"
 	if [ "$CODENAME" == "X00TD" ];then
