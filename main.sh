@@ -458,12 +458,12 @@ MakeZip(){
         cp -af $SpectrumDir/$spectrumFile init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel $KName/g" init.spectrum.rc
     fi
     cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Hikikomori/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=SkyWalker-Mizuki/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KernelFor/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$TypePrint/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=Ryuuji @ItsRyuujiX/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KVer/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=The best revenge for the people who have insulted you is the success that you can show them later./g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=When you have never made a mistake, it means you have not tried anything./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$GetCBD/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$TypeBuild/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$TypeBuildTag/g" anykernel.sh
@@ -503,13 +503,13 @@ FixPieWifi()
     cd $kernelDir
     git reset --hard origin/$branch
 	if [ "$branch" == "lynx-eas" ];then
-	git revert cd02fd2ef9b1513b39ac7de6fb98e08128a6e84e --no-commit
+	git revert b9783aa20b44eef0b9638079dd8a82103dbc0d15 --no-commit
 	# elif [ "$branch" == "skywalker" ];then
 	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
 	# elif [ "$branch" == "skywalker-eas" ];then
 	# git revert xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --no-commit
 	else
-	git revert 484986a8fe5e8b44a1da3e41f0aec3220292459d --no-commit
+	git revert fa139ae9719ddfce341b47d5d3d3c3ba1bfead80 --no-commit
 	fi
 	git commit -s -m "Bringup P Edition"
 	if [ "$CODENAME" == "X00TD" ];then
