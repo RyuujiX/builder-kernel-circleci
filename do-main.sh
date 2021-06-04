@@ -1,7 +1,7 @@
 #! /bin/bash
 branch="lynx"
 CODENAME="X01BD"
-BuilderKernel="00000"
+BuilderKernel="strix"
 
 if [ "$BuilderKernel" != "proton" ] && [ "$BuilderKernel" != "dtc" ] && [ "$BuilderKernel" != "gcc" ] && [ "$BuilderKernel" != "storm" ] && [ "$BuilderKernel" != "strix" ] && [ "$BuilderKernel" != "yuki" ] && [ "$BuilderKernel" != "sdclang" ] ;then
     exit;
